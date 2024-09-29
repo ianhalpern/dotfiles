@@ -1,0 +1,5 @@
+# Install
+
+```
+stow nvim -t ~
+```
