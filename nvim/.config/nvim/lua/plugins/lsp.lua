@@ -1,4 +1,47 @@
 return {
+
+  {
+    "neovim/nvim-lspconfig",
+    enabled = true,
+    dependencies = { "williamboman/mason-lspconfig.nvim", "williamboman/mason.nvim" },
+    opts = function(_, opts)
+      opts.servers.pylsp = {
+        settings = {
+          pylsp = {
+            plugins = {
+              -- formatting options
+              black = { enabled = true, line_length = 96, skip_string_normalization = true },
+              autopep8 = { enabled = false },
+              yapf = { enabled = false },
+              pydocstyle = { enabled = false },
+
+              -- linter options
+              pylint = { enabled = false },
+              -- pyflakes = { enabled = true },
+              -- pycodestyle = { enabled = false },
+              ruff = { enabled = true, formatEnabled = false, lineLength = 96 },
+              flake8 = { enabled = false },
+
+              -- type checker
+              -- pylsp_mypy = { enabled = false },
+              -- auto-completion options
+              -- jedi_completion = { fuzzy = true },
+
+              -- import sorting
+              isort = { enabled = true, profile = "black" },
+
+              -- renaming variables
+              -- rope = { enabled = true },
+              -- memestra = { enabled = false },
+            },
+          },
+        },
+      }
+      -- opts.servers.denols = { settings = { denols = {} } }
+      -- require("lspconfig").denols.setup({})
+      return opts
+    end,
+  },
   {
     "williamboman/mason.nvim",
     config = function()
@@ -15,8 +58,9 @@ return {
   },
   {
     "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim", "hrsh7th/cmp-nvim-lsp" },
     config = function()
-      require("mason-lspconfig").setup()
+      require("mason-lspconfig").setup({})
       vim.lsp.set_log_level("debug")
     end,
   },
@@ -32,9 +76,10 @@ return {
           -- web dev stuff
           "css-lsp",
           "html-lsp",
-          "typescript-language-server",
-          "deno",
+          -- "typescript-language-server",
+          -- "deno",
           "prettier",
+          "eslint",
 
           -- python stuff
           -- "pylint",
@@ -55,7 +100,7 @@ return {
         local args = {
           "install",
           "-U",
-          "pylsp-rope",
+          -- "pylsp-rope",
           "python-lsp-black",
           "python-lsp-isort",
           -- "pyls-flake8",
